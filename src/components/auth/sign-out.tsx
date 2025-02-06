@@ -1,4 +1,4 @@
-import { logout } from "@/actions/auth";
+import { logout } from "@/lib/actions/auth";
 import { AppContent } from "@/util/content";
 
 export default function Signout() {

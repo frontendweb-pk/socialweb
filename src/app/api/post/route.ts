@@ -24,7 +24,6 @@ import { z } from "zod";
 export const GET = async () => {
   try {
     const session = await isAuth();
-    console.log("S", session);
     const posts = await Post.findAll();
     return NextResponse.json(posts, { status: 200 });
   } catch (error) {

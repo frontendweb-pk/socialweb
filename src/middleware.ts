@@ -9,7 +9,7 @@ export default auth((req) => {
   const session = req.auth;
   if (!session) {
     return NextResponse.redirect(
-      new URL("/login?redirect=" + encodeURIComponent(pathname), req.url)
+      new URL("/login?redirect=" + encodeURIComponent(pathname), req.nextUrl)
     );
   }
 
@@ -20,7 +20,7 @@ export default auth((req) => {
   if (pathname.startsWith("/admin") && role !== 1) {
     // Redirect non-admin users to login page
     return NextResponse.redirect(
-      new URL("/login?redirect=" + encodeURIComponent(pathname), req.url)
+      new URL("/login?redirect=" + encodeURIComponent(pathname), req.nextUrl)
     );
   }
 
@@ -28,7 +28,7 @@ export default auth((req) => {
   if (pathname.startsWith("/user") && role !== 2) {
     // Redirect non-user users to login page
     return NextResponse.redirect(
-      new URL("/login?redirect=" + encodeURIComponent(pathname), req.url)
+      new URL("/login?redirect=" + encodeURIComponent(pathname), req.nextUrl)
     );
   }
 

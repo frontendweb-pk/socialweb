@@ -1,4 +1,4 @@
-import { createPost, getPosts } from "@/actions/post";
+import { createPost, getPosts } from "@/lib/actions/post";
 
 export default async function Page() {
   const posts = await getPosts();
