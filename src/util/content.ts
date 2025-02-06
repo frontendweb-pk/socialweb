@@ -7,4 +7,5 @@ export const AppContent = {
   save: "Save",
   delete: "Delete",
   update: "Update",
+  signOut: "Sign out",
 };

@@ -1,19 +1,14 @@
 "use server";
 
 import { auth } from "@/auth";
+import { headers } from "next/headers";
 
 export async function getPosts() {
-  const session = await auth();
-
+  const header = await headers();
   const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/post", {
-    headers: {
-      Authorization: `Bearer ${session?.user?.access_token}`,
-    },
+    headers: header,
   });
-
   const posts = await response.json();
-
-  console.log("Posts", posts);
 
   return posts;
 }

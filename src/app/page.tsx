@@ -1,8 +1,22 @@
 import { auth, signOut } from "@/auth";
+import Signout from "@/components/auth/sign-out";
 import Image from "next/image";
+import Link from "next/link";
 
 export default async function Home() {
   const session = await auth();
+
+  const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "/post", {
+    headers: {
+      "Content-Type": "application/json",
+      ...(session && {
+        Authorization: `Bearer ${session?.user?.access_token}`,
+      }),
+    },
+  });
+
+  const posts = await response.json();
+  console.log("Posts", posts);
 
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
@@ -51,15 +65,10 @@ export default async function Home() {
             Read our docs
           </a>
 
-          {JSON.stringify(session)}
-          <form
-            action={async () => {
-              "use server";
-              await signOut();
-            }}
-          >
-            <button type="submit">Sign Out</button>
-          </form>
+          <div className="flex items-center gap-2">
+            <Link href="/login">Login </Link>
+            <Signout />
+          </div>
         </div>
       </main>
       <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">

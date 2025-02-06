@@ -21,8 +21,10 @@ export const { auth, handlers, signIn, signOut, unstable_update } = NextAuth({
     error: "/global-error.tsx",
   },
   callbacks: {
+    // async signIn({ user, account, profile, email, credentials }) {
+    //   return true;
+    // },
     async authorized({ auth, request }) {
-      console.log("AUTH", auth);
       if (auth) {
         return true;
       }

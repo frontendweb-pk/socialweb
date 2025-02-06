@@ -1,5 +1,6 @@
 import { auth } from "@/auth";
-import { CustomError, ValidationError } from "@/lib/errors";
+import { AuthError, CustomError, ValidationError } from "@/lib/errors";
+import { isAuth } from "@/lib/middlewares/auth";
 import { errorHandler } from "@/lib/middlewares/error-handler";
 import { Post } from "@/lib/models";
 import { Session } from "next-auth";
@@ -8,22 +9,28 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 
 /**
- *
- * @returns
- */
-
-export const GET = auth((req) => {
-  if (req.auth?.user) return NextResponse.json(req.auth);
-  return NextResponse.json({ message: "Not authenticated" }, { status: 401 });
-});
-/**
- *
- * @returns
+ * Post schema
  */
 const postSchema = z.object({
   content: z.string(),
   user_id: z.number(),
 });
+
+/**
+ * Get all posts
+ * @param req
+ * @returns
+ */
+export const GET = async (req: Request) => {
+  try {
+    const session = await isAuth();
+    console.log("S", session);
+    const posts = await Post.findAll();
+    return NextResponse.json(posts, { status: 200 });
+  } catch (error) {
+    return errorHandler(error as CustomError);
+  }
+};
 
 export const POST = auth(async (req) => {
   try {
