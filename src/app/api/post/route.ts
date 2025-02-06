@@ -12,8 +12,7 @@ import { z } from "zod";
  * @returns
  */
 
-export const GET = auth(function GET(req) {
-  console.log("R", req.headers.get("authorization"), req.auth);
+export const GET = auth((req) => {
   if (req.auth?.user) return NextResponse.json(req.auth);
   return NextResponse.json({ message: "Not authenticated" }, { status: 401 });
 });
@@ -25,7 +24,8 @@ const postSchema = z.object({
   content: z.string(),
   user_id: z.number(),
 });
-export const POST = auth(async function POST(req) {
+
+export const POST = auth(async (req) => {
   try {
     // const session = isAuth(req.auth!) as Session;
     const session = req.auth as Session;

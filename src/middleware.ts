@@ -2,7 +2,10 @@ import { NextResponse } from "next/server";
 import { auth } from "./auth";
 
 export default auth(function middleware(req) {
+  // segment name
   const url = req.nextUrl.pathname;
+
+  // get role from auth
   const role = req.auth?.user?.role_id;
 
   if (url.startsWith("/admin") && role !== 1) {
