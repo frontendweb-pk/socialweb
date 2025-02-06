@@ -1,4 +1,8 @@
-import { AuthError, CustomError, ValidationError } from "@/lib/errors";
+import {
+  AuthenticationError,
+  CustomError,
+  ValidationError,
+} from "@/lib/errors";
 import { Jwt } from "@/lib/jwt";
 import { errorHandler } from "@/lib/middlewares/error-handler";
 import { User } from "@/lib/models";
@@ -25,13 +29,13 @@ export async function POST(req: Request) {
     // check user exists
     const user = await User.findOne({ where: { email: body.email } });
     if (!user) {
-      throw new AuthError("Invalid credentials", "email");
+      throw new AuthenticationError("Invalid credentials", "email");
     }
 
     // check password
     const isMatch = await Password.compare(body.password, user.password);
     if (!isMatch) {
-      throw new AuthError("Invalid password", "password");
+      throw new AuthenticationError("Invalid password", "password");
     }
 
     // return user
